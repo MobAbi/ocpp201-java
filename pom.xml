@@ -1,10 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>ch.mobility</groupId>
   <artifactId>ocpp201-java</artifactId>
-  <packaging>jar</packaging>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
+
   <name>ocpp201-java</name>
 
   <properties>
@@ -13,9 +14,9 @@
 
   <build>
     <resources>
+      <!-- Exclude the JSON files from the generated jar-file -->
       <resource>
         <directory>${basedir}/src/main/resources</directory>
-        <!-- Exclude the JSON files from the generated jar-file -->
         <excludes>
           <exclude>*.json</exclude>
         </excludes>
@@ -23,7 +24,6 @@
     </resources>
 
     <plugins>
-
       <plugin>
         <groupId>org.jsonschema2pojo</groupId>
         <artifactId>jsonschema2pojo-maven-plugin</artifactId>
@@ -31,11 +31,16 @@
         <configuration>
           <sourceDirectory>${basedir}/src/main/resources</sourceDirectory>
           <outputDirectory>${basedir}/src/main/java</outputDirectory>
-          <removeOldOutput>true</removeOldOutput>
-          <targetPackage>ch.mobility</targetPackage>
+          <targetPackage>ocpp.cs._2020._03</targetPackage>
           <includeJsr303Annotations>true</includeJsr303Annotations>
+          <!--
+          Diese Angaben haben keinen Effekt da die "GenerationConfig" überschrieben ist im Base-Projekt !!!
           <serializable>true</serializable>
+          <useJodaDates>true</useJodaDates>
+          -->
           <annotationStyle>gson</annotationStyle>
+          <customRuleFactory>ocpp.cs._2020._03.generate.Ocpp201Json2JavaRuleFactory</customRuleFactory>
+          <customAnnotator>ocpp.cs._2020._03.generate.Ocpp201Json2JavaAnnotator</customAnnotator>
         </configuration>
         <executions>
           <execution>
@@ -44,6 +49,13 @@
             </goals>
           </execution>
         </executions>
+        <dependencies>
+          <dependency>
+            <groupId>ch.mobility</groupId>
+            <artifactId>ocpp201-base</artifactId>
+            <version>0.0.1</version>
+          </dependency>
+        </dependencies>
       </plugin>
 
       <plugin>
@@ -55,13 +67,14 @@
         </configuration>
       </plugin>
 
+      <!-- Only clean the generated src files -->
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
           <filesets>
             <fileset>
-              <directory>src/main/java</directory>
+              <directory>src/main/java/ocpp</directory>
               <followSymlinks>false</followSymlinks>
               <useDefaultExcludes>true</useDefaultExcludes>
               <includes>
@@ -85,6 +98,12 @@
   </build>
 
   <dependencies>
+
+    <dependency>
+      <groupId>ch.mobility</groupId>
+      <artifactId>ocpp201-base</artifactId>
+      <version>0.0.1</version>
+    </dependency>
 
     <dependency>
       <groupId>com.google.code.gson</groupId>
