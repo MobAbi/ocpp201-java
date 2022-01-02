@@ -4,13 +4,13 @@
 
   <groupId>ch.mobility</groupId>
   <artifactId>ocpp201-java</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
 
   <name>ocpp201-java</name>
 
   <properties>
     <java.version>1.8</java.version>
-    <ocpp201-base.version>0.0.1</ocpp201-base.version>
+    <ocpp201-base.version>0.0.2</ocpp201-base.version>
   </properties>
 
   <repositories>
